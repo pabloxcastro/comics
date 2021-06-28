@@ -1,8 +1,10 @@
 package com.p4bloh.comics.domain.model;
 
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Entity
@@ -15,19 +17,19 @@ public class Usuario {
     @Column(length = 40, nullable = false)
     private String nome;
 
-    @Column(nullable = false, length = 11)
+    @Column(nullable = false, unique = true, length = 11)
+    @CPF(message = "CPF é invalido")
+    @NotBlank(message = "CPF é obrigatório")
     private String cpf;
 
-    @Column(nullable = false,  length = 40) //unique = true,
+    @Column(nullable = false, unique = true, length = 40)
     private String email;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "dtnascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    public Usuario() {
-        // vázio
-    }
+    public Usuario() {}
 
     public Usuario(String nome, String cpf, String email, LocalDate dataNascimento) {
         this.nome = nome;
