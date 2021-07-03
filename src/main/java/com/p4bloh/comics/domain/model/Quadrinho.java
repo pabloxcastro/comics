@@ -1,9 +1,12 @@
 package com.p4bloh.comics.domain.model;
 
+import com.p4bloh.comics.marvel.model.ComicPrice;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-public class Livro {
+public class Quadrinho {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,14 +16,9 @@ public class Livro {
     @JoinColumn(nullable = false)
     private Usuario usuario;
 
-    @Column
+    @Column//(nullable = false)
+    //@NotBlank(message = "Titulo é obrigatório")
     private String titulo;
-
-    @Column
-    private Double preco;
-
-    @Column
-    private String autores;
 
     @Column
     private String isbn;
@@ -28,15 +26,13 @@ public class Livro {
     @Column
     private String descricao;
 
-    public Livro() {
+    public Quadrinho() {
         //
     }
 
-    public Livro(Usuario usuario, String titulo, Double preco, String autores, String isbn, String descricao) {
+    public Quadrinho(Usuario usuario, String titulo, String isbn, String descricao) {
         this.usuario = usuario;
         this.titulo = titulo;
-        this.preco = preco;
-        this.autores = autores;
         this.isbn = isbn;
         this.descricao = descricao;
     }
@@ -65,22 +61,6 @@ public class Livro {
         this.titulo = titulo;
     }
 
-    public Double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
-
-    public String getAutores() {
-        return autores;
-    }
-
-    public void setAutores(String autores) {
-        this.autores = autores;
-    }
-
     public String getIsbn() {
         return isbn;
     }
@@ -96,4 +76,5 @@ public class Livro {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
 }
