@@ -1,13 +1,13 @@
 package com.p4bloh.comics.domain.service;
 
 import com.p4bloh.comics.domain.dto.QuadrinhoDto;
+import com.p4bloh.comics.domain.dto.QuadrinhoResponseDto;
 import com.p4bloh.comics.domain.exception.EntidadeNaoEncontradaException;
 import com.p4bloh.comics.domain.model.Quadrinho;
 import com.p4bloh.comics.domain.model.QuadrinhoAutor;
 import com.p4bloh.comics.domain.model.QuadrinhoPreco;
 import com.p4bloh.comics.domain.model.Usuario;
 import com.p4bloh.comics.domain.repository.QuadrinhoAutorRepository;
-import com.p4bloh.comics.domain.repository.QuadrinhoPrecoRepository;
 import com.p4bloh.comics.domain.repository.QuadrinhoRepository;
 import com.p4bloh.comics.domain.repository.UsuarioRepository;
 import com.p4bloh.comics.marvel.client.ComicClient;
@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class QuadrinhoService {
@@ -31,12 +33,12 @@ public class QuadrinhoService {
     private ComicClient comicClient;
 
     @Autowired
-    private QuadrinhoPrecoRepository quadrinhoPrecoRepository;
+    private QuadrinhoPrecoService quadrinhoPrecoService;
 
     @Autowired
-    private QuadrinhoAutorRepository quadrinhoAutorRepository;
+    private QuadrinhoAutorService quadrinhoAutorService;
 
-    public Quadrinho salvar(QuadrinhoDto quadrinhoDto){
+    public QuadrinhoResponseDto salvar(QuadrinhoDto quadrinhoDto){
 
         Long usuarioId = quadrinhoDto.getUsuarioId();
         Usuario usuario = usuarioRepository.findById(usuarioId)
@@ -62,36 +64,19 @@ public class QuadrinhoService {
 
         Quadrinho quadrinhoNovo = quadrinhoRepository.save(quadrinho);
 
+        List<QuadrinhoPreco> quadrinhoPrecos = new ArrayList<>();
+
         if (precos.size() > 0 ) {
-
-            for (ComicPrice comicPrice : precos) {
-                QuadrinhoPreco quadrinhoPreco = new QuadrinhoPreco();
-
-                quadrinhoPreco.setQuadrinho(quadrinhoNovo);
-                quadrinhoPreco.setTipo(comicPrice.getType());
-                quadrinhoPreco.setPreco(comicPrice.getPrice());
-
-                quadrinhoPrecoRepository.save(quadrinhoPreco);
-            }
+             quadrinhoPrecos = quadrinhoPrecoService.salvar(quadrinhoNovo, precos);
         }
 
-        if (autores.getItems().size() > 0){
+        List<CreatorSummary> nomesAutores = autores.getItems();
+        List<QuadrinhoAutor> quadrinhoAutores = new ArrayList<>();
 
-            //quadrinhoAutorService.salvar(nomes)
-
-            List<CreatorSummary> nomes = autores.getItems();
-
-            for (CreatorSummary creatorSummary: nomes){
-
-                QuadrinhoAutor quadrinhoAutor = new QuadrinhoAutor();
-
-                quadrinhoAutor.setQuadrinho(quadrinhoNovo);
-                quadrinhoAutor.setName(creatorSummary.getName());
-
-                quadrinhoAutorRepository.save(quadrinhoAutor);
-            }
+        if (nomesAutores.size() > 0){
+             quadrinhoAutores = quadrinhoAutorService.salvar(quadrinhoNovo, nomesAutores);
         }
 
-        return quadrinhoNovo;
+        return QuadrinhoResponseDto.toDto(quadrinhoNovo, quadrinhoPrecos, quadrinhoAutores);
     }
 }

@@ -1,8 +1,7 @@
 package com.p4bloh.comics.domain.api.controller;
 
 import com.p4bloh.comics.domain.dto.QuadrinhoDto;
-import com.p4bloh.comics.domain.exception.EntidadeNaoEncontradaException;
-import com.p4bloh.comics.domain.model.Quadrinho;
+import com.p4bloh.comics.domain.dto.QuadrinhoResponseDto;
 import com.p4bloh.comics.domain.service.QuadrinhoService;
 import com.p4bloh.comics.marvel.client.ComicClient;
 import com.p4bloh.comics.marvel.model.ComicDataWrapper;
@@ -22,20 +21,9 @@ public class QuadrinhoController {
 
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody QuadrinhoDto quadrinhoDto){
-        Quadrinho quadrinhoNovo = quadrinhoService.salvar(quadrinhoDto);
+        QuadrinhoResponseDto quadrinhoNovo = quadrinhoService.salvar(quadrinhoDto);
         return ResponseEntity.ok(quadrinhoNovo);
     }
-
-    /*@PutMapping
-    public ResponseEntity<?> adicionar(@RequestBody Quadrinho quadrinho){
-        try {
-            Quadrinho quadrinhoNovo = quadrinhoService.salvar(quadrinho);
-            return ResponseEntity.ok(quadrinhoNovo);
-
-        } catch (EntidadeNaoEncontradaException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }*/
 
     @GetMapping
     public ComicDataWrapper catalogoComic() {
