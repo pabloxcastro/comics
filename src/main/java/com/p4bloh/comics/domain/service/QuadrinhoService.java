@@ -7,7 +7,6 @@ import com.p4bloh.comics.domain.model.Quadrinho;
 import com.p4bloh.comics.domain.model.QuadrinhoAutor;
 import com.p4bloh.comics.domain.model.QuadrinhoPreco;
 import com.p4bloh.comics.domain.model.Usuario;
-import com.p4bloh.comics.domain.repository.QuadrinhoAutorRepository;
 import com.p4bloh.comics.domain.repository.QuadrinhoRepository;
 import com.p4bloh.comics.domain.repository.UsuarioRepository;
 import com.p4bloh.comics.marvel.client.ComicClient;
@@ -16,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class QuadrinhoService {
