@@ -1,7 +1,7 @@
 package com.p4bloh.comics.domain.api.controller;
 
-import com.p4bloh.comics.domain.dto.QuadrinhoDto;
-import com.p4bloh.comics.domain.dto.QuadrinhoResponseDto;
+import com.p4bloh.comics.domain.dto.QuadrinhoRequest;
+import com.p4bloh.comics.domain.dto.QuadrinhoResponse;
 import com.p4bloh.comics.domain.exception.EntidadeNaoEncontradaException;
 import com.p4bloh.comics.domain.model.Quadrinho;
 import com.p4bloh.comics.domain.model.QuadrinhoAutor;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "api/quadrinhos")
@@ -45,45 +44,30 @@ public class QuadrinhoController {
     private ComicClient comicClient;
 
     @PostMapping
-    public ResponseEntity<?> adicionar(@RequestBody QuadrinhoDto quadrinhoDto){
-        QuadrinhoResponseDto quadrinhoNovo = quadrinhoService.salvar(quadrinhoDto);
-        return ResponseEntity.ok(quadrinhoNovo);
-    }
+    public ResponseEntity<?> adicionar(@RequestBody QuadrinhoRequest quadrinhoRequest) {
+        try {
+            QuadrinhoResponse quadrinhoNovo = quadrinhoService.salvar(quadrinhoRequest);
+            return ResponseEntity.ok(quadrinhoNovo);
 
-    @PutMapping
-    public ResponseEntity<?> gerarIsbn(@RequestBody Boolean gerar){
-
-        List<Quadrinho> quadrinhos = quadrinhoRepository.findByIsbnIsNull();
-
-        for (Quadrinho quadrinho: quadrinhos){
-
-            Long quadrinhoId = quadrinho.getId();
-            Optional<Quadrinho> quadrinhoAtual = quadrinhoRepository.findById(quadrinhoId);
-
-            if (quadrinhoAtual.isPresent()) {
-                quadrinhoAtual.get().setIsbn("123456789");
-                quadrinhoRepository.save(quadrinhoAtual.get());
-            }
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        return ResponseEntity.ok(quadrinhos);
     }
 
-
-    @GetMapping
+    @GetMapping("/marvel")
     public ComicDataWrapper catalogoComic() {
         ComicDataWrapper catalogo = comicClient.catalogo();
         return catalogo;
     }
 
-    @GetMapping({"/{comicId}"})
-    public ComicDataWrapper buscarComic(@PathVariable int comicId ) {
+    @GetMapping("/marvel/{comicId}")
+    public ComicDataWrapper buscarComic(@PathVariable Long comicId) {
         ComicDataWrapper comic = comicClient.getComic(comicId);
         return comic;
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<?> listarQuadrinhos(@PathVariable Long usuarioId){
+    public ResponseEntity<?> findQuadrinhosUsuario(@PathVariable Long usuarioId) {
 
         try {
             Usuario usuario = usuarioRepository.findById(usuarioId)
@@ -91,32 +75,27 @@ public class QuadrinhoController {
 
             List<Quadrinho> quadrinhos = quadrinhoRepository.findByUsuarioEquals(usuario);
 
-            if (quadrinhos.size() == 0){
+            if (quadrinhos.size() == 0) {
                 return ResponseEntity.badRequest().body("Não há quadrinhos para o usuário informado");
             }
 
-            List<QuadrinhoResponseDto> quadrinhoResponseDtos = new ArrayList<>();
+            List<QuadrinhoResponse> quadrinhoResponses = new ArrayList<>();
 
-            for (Quadrinho quadrinho: quadrinhos){
+            for (Quadrinho quadrinho : quadrinhos) {
                 Long quadrinhoId = quadrinho.getId();
+
+                Boolean descontoAtivo = quadrinhoService.getDescontoAtivo(quadrinho.getDiaDesconto());
 
                 List<QuadrinhoPreco> quadrinhoPrecos = quadrinhoPrecoRepository.findByQuadrinhoEquals(quadrinho);
                 List<QuadrinhoAutor> quadrinhoAutores = quadrinhoAutorRepository.findByQuadrinhoEquals(quadrinho);
 
-                quadrinhoResponseDtos.add(QuadrinhoResponseDto.toDto(quadrinho, quadrinhoPrecos, quadrinhoAutores));
+                quadrinhoResponses.add(QuadrinhoResponse.toDto(quadrinho, descontoAtivo, quadrinhoPrecos, quadrinhoAutores));
             }
 
-            return ResponseEntity.ok(quadrinhoResponseDtos);
+            return ResponseEntity.ok(quadrinhoResponses);
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-
-
-       
-
     }
-
-
 }
