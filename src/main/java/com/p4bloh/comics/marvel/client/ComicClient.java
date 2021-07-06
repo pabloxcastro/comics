@@ -12,6 +12,6 @@ public interface ComicClient {
     ComicDataWrapper catalogo();
 
     @GetMapping(value = "/{comicId}?ts=1624907750&apikey=0da79380c003525285af682022c4573b&hash=9bfb4e3f0b160939770a311ec87e4edd")
-    ComicDataWrapper getComic(@PathVariable int comicId);
+    ComicDataWrapper getComic(@PathVariable Long comicId);
 
 }

@@ -3,14 +3,14 @@ package com.p4bloh.comics.marvel.model;
 import java.util.List;
 
 public class Comic {
-    private int id;
+    private Long id;
     private String title;
     private List<ComicPrice> prices;
     private String isbn;
     private String description;
     private CreatorList creators;
 
-    public Comic(int id, String title, List prices, String isbn, String description, CreatorList creators ) {
+    public Comic(Long id, String title, List prices, String isbn, String description, CreatorList creators ) {
         this.id = id;
         this.title = title;
         this.prices = prices;
@@ -22,11 +22,11 @@ public class Comic {
     public Comic() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

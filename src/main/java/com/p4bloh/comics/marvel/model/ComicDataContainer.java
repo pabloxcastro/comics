@@ -1,6 +1,5 @@
 package com.p4bloh.comics.marvel.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ComicDataContainer {
