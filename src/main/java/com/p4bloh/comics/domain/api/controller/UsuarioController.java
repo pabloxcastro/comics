@@ -1,8 +1,8 @@
 package com.p4bloh.comics.domain.api.controller;
 
-import com.p4bloh.comics.domain.exception.EntidadeJaExisteException;
+import com.p4bloh.comics.domain.dto.UsuarioRequest;
+import com.p4bloh.comics.domain.dto.UsuarioResponse;
 import com.p4bloh.comics.domain.model.Usuario;
-import com.p4bloh.comics.domain.repository.UsuarioRepository;
 import com.p4bloh.comics.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<?> adicionar(@RequestBody @Valid Usuario usuario){
-        Usuario usuarioNovo = usuarioService.salvar(usuario);
-        return ResponseEntity.status(201).body(usuarioNovo);
+    public ResponseEntity<?> adicionar(@Valid @RequestBody UsuarioRequest usuarioRequest){
+        Usuario usuarioNovo = usuarioService.salvar(usuarioRequest);
+        return ResponseEntity.status(201).body(UsuarioResponse.toDto(usuarioNovo));
     }
 }
