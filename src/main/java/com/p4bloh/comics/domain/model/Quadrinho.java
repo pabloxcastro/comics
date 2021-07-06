@@ -1,9 +1,6 @@
 package com.p4bloh.comics.domain.model;
 
-import com.p4bloh.comics.marvel.model.ComicPrice;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Quadrinho {
@@ -16,8 +13,7 @@ public class Quadrinho {
     @JoinColumn(nullable = false)
     private Usuario usuario;
 
-    @Column//(nullable = false)
-    //@NotBlank(message = "Titulo é obrigatório")
+    @Column
     private String titulo;
 
     @Column
@@ -26,15 +22,20 @@ public class Quadrinho {
     @Column
     private String descricao;
 
+    @Column
+    private int diaDesconto;
+
     public Quadrinho() {
         //
     }
 
-    public Quadrinho(Usuario usuario, String titulo, String isbn, String descricao) {
+    public Quadrinho(Long id, Usuario usuario, String titulo, String isbn, String descricao, int diaDesconto) {
+        this.id = id;
         this.usuario = usuario;
         this.titulo = titulo;
         this.isbn = isbn;
         this.descricao = descricao;
+        this.diaDesconto = diaDesconto;
     }
 
     public Long getId() {
@@ -77,4 +78,11 @@ public class Quadrinho {
         this.descricao = descricao;
     }
 
+    public int getDiaDesconto() {
+        return diaDesconto;
+    }
+
+    public void setDiaDesconto(int diaDesconto) {
+        this.diaDesconto = diaDesconto;
+    }
 }

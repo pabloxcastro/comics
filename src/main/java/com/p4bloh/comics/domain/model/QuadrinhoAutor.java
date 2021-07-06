@@ -1,7 +1,6 @@
 package com.p4bloh.comics.domain.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 public class QuadrinhoAutor {

@@ -9,28 +9,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuadrinhoResponseDto {
+public class QuadrinhoResponse {
     private String nomeUsuario;
     private String emailUsuario;
     private String titulo;
     private String isbn;
     private String descricao;
+    private int diaDesconto;
+    private Boolean descontoAtivo;
     private Map<String, Float> precos;
     private List<String> autores;
 
-    public QuadrinhoResponseDto(String nomeUsuario, String emailUsuario, String titulo, String isbn, String descricao,
-                                Map<String, Float> precos, List<String> autores) {
+    public QuadrinhoResponse(String nomeUsuario, String emailUsuario, String titulo, String isbn, String descricao,
+                             int diaDesconto, Boolean descontoAtivo, Map<String, Float> precos, List<String> autores)
+    {
         this.nomeUsuario = nomeUsuario;
         this.emailUsuario = emailUsuario;
         this.titulo = titulo;
         this.isbn = isbn;
         this.descricao = descricao;
+        this.diaDesconto = diaDesconto;
+        this.descontoAtivo = descontoAtivo;
         this.precos = precos;
         this.autores = autores;
     }
 
-    public static QuadrinhoResponseDto toDto(Quadrinho quadrinho, List<QuadrinhoPreco> quadrinhoPrecos,
-                                             List<QuadrinhoAutor> quadrinhoAutores){
+    public static QuadrinhoResponse toDto(Quadrinho quadrinho, Boolean descontoAtivo, List<QuadrinhoPreco> quadrinhoPrecos,
+                                          List<QuadrinhoAutor> quadrinhoAutores){
 
         Map<String, Float> quadrinhoPrecosDto = new HashMap<>();
 
@@ -44,17 +49,19 @@ public class QuadrinhoResponseDto {
             quadrinhoAutorDto.add(quadrinhoAutor.getName());
         }
 
-        QuadrinhoResponseDto quadrinhoResponseDto = new QuadrinhoResponseDto(
-            quadrinho.getUsuario().getNome(),
-            quadrinho.getUsuario().getEmail(),
-            quadrinho.getTitulo(),
-            quadrinho.getIsbn(),
-            quadrinho.getDescricao(),
-            quadrinhoPrecosDto,
-            quadrinhoAutorDto
+        QuadrinhoResponse quadrinhoResponse = new QuadrinhoResponse(
+                quadrinho.getUsuario().getNome(),
+                quadrinho.getUsuario().getEmail(),
+                quadrinho.getTitulo(),
+                quadrinho.getIsbn(),
+                quadrinho.getDescricao(),
+                quadrinho.getDiaDesconto(),
+                descontoAtivo,
+                quadrinhoPrecosDto,
+                quadrinhoAutorDto
         );
 
-        return quadrinhoResponseDto;
+        return quadrinhoResponse;
     }
 
     public String getNomeUsuario() {
@@ -111,5 +118,21 @@ public class QuadrinhoResponseDto {
 
     public void setAutores(List<String> autores) {
         this.autores = autores;
+    }
+
+    public int getDiaDesconto() {
+        return diaDesconto;
+    }
+
+    public void setDiaDesconto(int diaDesconto) {
+        this.diaDesconto = diaDesconto;
+    }
+
+    public Boolean getDescontoAtivo() {
+        return descontoAtivo;
+    }
+
+    public void setDescontoAtivo(Boolean descontoAtivo) {
+        this.descontoAtivo = descontoAtivo;
     }
 }
