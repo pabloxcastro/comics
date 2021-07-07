@@ -47,7 +47,7 @@ public class QuadrinhoController {
     public ResponseEntity<?> adicionar(@RequestBody QuadrinhoRequest quadrinhoRequest) {
         try {
             QuadrinhoResponse quadrinhoNovo = quadrinhoService.salvar(quadrinhoRequest);
-            return ResponseEntity.ok(quadrinhoNovo);
+            return ResponseEntity.status(201).body(quadrinhoNovo);
 
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

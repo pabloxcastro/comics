@@ -22,7 +22,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<?> adicionar(@Valid @RequestBody UsuarioRequest usuarioRequest){
-        Usuario usuarioNovo = usuarioService.salvar(usuarioRequest);
+        Usuario usuarioNovo = usuarioService.salvar(usuarioRequest.toObj());
         return ResponseEntity.status(201).body(UsuarioResponse.toDto(usuarioNovo));
     }
 }
