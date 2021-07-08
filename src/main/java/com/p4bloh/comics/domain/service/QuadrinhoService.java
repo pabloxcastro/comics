@@ -48,7 +48,6 @@ public class QuadrinhoService {
         Inicializando o quadrinho
          */
         Quadrinho quadrinho = new Quadrinho();
-        Boolean descontoAtivo = false;
         quadrinho.setUsuario(usuario);
 
         /*
@@ -69,14 +68,16 @@ public class QuadrinhoService {
             for (Comic comic : comics) {
                 quadrinho.setDescricao(comic.getDescription());
 
-                if (comic.getIsbn() != "") {
+                if (!comic.getIsbn().equals("")) {
                     quadrinho.setIsbn(comic.getIsbn());
-                } else {
+
+                } else if (!quadrinhoRequest.getIsbn().equals("")) {
                     quadrinho.setIsbn(quadrinhoRequest.getIsbn());
                 }
 
-                quadrinho.setDiaDesconto(this.getDiaDesconto(quadrinho.getIsbn()));
-                descontoAtivo = this.getDescontoAtivo(quadrinho.getDiaDesconto());
+                if (!comic.getIsbn().equals("") && !quadrinhoRequest.getIsbn().equals("") ) {
+                    quadrinho.setDiaDesconto(this.getDiaDesconto(quadrinho.getIsbn()));
+                }
 
                 quadrinho.setTitulo(comic.getTitle());
                 precos = comic.getPrices();
@@ -101,7 +102,7 @@ public class QuadrinhoService {
                 quadrinhoAutores = quadrinhoAutorService.salvar(quadrinhoNovo, nomesAutores);
             }
 
-            return QuadrinhoResponse.toDto(quadrinhoNovo, descontoAtivo, quadrinhoPrecos, quadrinhoAutores);
+            return QuadrinhoResponse.toDto(quadrinhoNovo, false, quadrinhoPrecos, quadrinhoAutores);
 
         } catch (FeignException e){
             throw new EntidadeNaoEncontradaException("Comic", comicId);

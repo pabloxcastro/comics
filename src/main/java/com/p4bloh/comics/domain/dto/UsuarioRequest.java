@@ -2,7 +2,6 @@ package com.p4bloh.comics.domain.dto;
 
 import com.p4bloh.comics.domain.model.Usuario;
 import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -22,7 +21,6 @@ public class UsuarioRequest {
     @NotBlank(message = "Email é obrigatório")
     private String email;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Data de nascimento é obrigatório")
     private LocalDate dataNascimento;
 
