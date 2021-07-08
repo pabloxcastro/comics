@@ -19,7 +19,7 @@ public class Quadrinho {
     @Column
     private String isbn;
 
-    @Column
+    @Lob
     private String descricao;
 
     @Column

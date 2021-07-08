@@ -82,14 +82,14 @@ public class QuadrinhoController {
             List<QuadrinhoResponse> quadrinhoResponses = new ArrayList<>();
 
             for (Quadrinho quadrinho : quadrinhos) {
-                Long quadrinhoId = quadrinho.getId();
-
                 Boolean descontoAtivo = quadrinhoService.getDescontoAtivo(quadrinho.getDiaDesconto());
 
+                Long quadrinhoId = quadrinho.getId();
                 List<QuadrinhoPreco> quadrinhoPrecos = quadrinhoPrecoRepository.findByQuadrinhoEquals(quadrinho);
                 List<QuadrinhoAutor> quadrinhoAutores = quadrinhoAutorRepository.findByQuadrinhoEquals(quadrinho);
 
-                quadrinhoResponses.add(QuadrinhoResponse.toDto(quadrinho, descontoAtivo, quadrinhoPrecos, quadrinhoAutores));
+                quadrinhoResponses.add(QuadrinhoResponse.toDto(
+                        quadrinho, descontoAtivo, quadrinhoPrecos, quadrinhoAutores));
             }
 
             return ResponseEntity.ok(quadrinhoResponses);

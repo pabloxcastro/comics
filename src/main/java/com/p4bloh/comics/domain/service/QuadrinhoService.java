@@ -48,7 +48,6 @@ public class QuadrinhoService {
         Inicializando o quadrinho
          */
         Quadrinho quadrinho = new Quadrinho();
-        Boolean descontoAtivo = false;
         quadrinho.setUsuario(usuario);
 
         /*
@@ -78,7 +77,6 @@ public class QuadrinhoService {
 
                 if (!comic.getIsbn().equals("") && !quadrinhoRequest.getIsbn().equals("") ) {
                     quadrinho.setDiaDesconto(this.getDiaDesconto(quadrinho.getIsbn()));
-                    descontoAtivo = this.getDescontoAtivo(quadrinho.getDiaDesconto());
                 }
 
                 quadrinho.setTitulo(comic.getTitle());
@@ -104,7 +102,7 @@ public class QuadrinhoService {
                 quadrinhoAutores = quadrinhoAutorService.salvar(quadrinhoNovo, nomesAutores);
             }
 
-            return QuadrinhoResponse.toDto(quadrinhoNovo, descontoAtivo, quadrinhoPrecos, quadrinhoAutores);
+            return QuadrinhoResponse.toDto(quadrinhoNovo, false, quadrinhoPrecos, quadrinhoAutores);
 
         } catch (FeignException e){
             throw new EntidadeNaoEncontradaException("Comic", comicId);
