@@ -2,5 +2,5 @@
 
 ### Cadastro de usuário
 ### Consulta comics da Marvel
-### Cadastra quadrinho para usuário
+### Cadastro de quadrinho para o usuário
 ### Consulta quadrinhos por usuário
