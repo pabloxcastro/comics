@@ -4,6 +4,7 @@ import com.p4bloh.comics.domain.dto.UsuarioRequest;
 import com.p4bloh.comics.domain.dto.UsuarioResponse;
 import com.p4bloh.comics.domain.model.Usuario;
 import com.p4bloh.comics.domain.service.UsuarioService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
+    @ApiOperation(value = "Cadastro de usuários")
     public ResponseEntity<?> adicionar(@Valid @RequestBody UsuarioRequest usuarioRequest){
         Usuario usuarioNovo = usuarioService.salvar(usuarioRequest.toObj());
         return ResponseEntity.status(201).body(UsuarioResponse.toDto(usuarioNovo));

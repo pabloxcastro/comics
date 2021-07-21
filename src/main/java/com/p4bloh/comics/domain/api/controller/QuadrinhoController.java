@@ -14,6 +14,8 @@ import com.p4bloh.comics.domain.repository.UsuarioRepository;
 import com.p4bloh.comics.domain.service.QuadrinhoService;
 import com.p4bloh.comics.marvel.client.ComicClient;
 import com.p4bloh.comics.marvel.model.ComicDataWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/quadrinhos")
+@Api(value="API REST para Cadastro de quadrinhos da Marvel")
+@CrossOrigin(origins="*")
 public class QuadrinhoController {
 
     @Autowired
@@ -44,6 +48,7 @@ public class QuadrinhoController {
     private ComicClient comicClient;
 
     @PostMapping
+    @ApiOperation(value = "Cadastro de quadrinhos")
     public ResponseEntity<?> adicionar(@RequestBody QuadrinhoRequest quadrinhoRequest) {
         try {
             QuadrinhoResponse quadrinhoNovo = quadrinhoService.salvar(quadrinhoRequest);
@@ -55,18 +60,21 @@ public class QuadrinhoController {
     }
 
     @GetMapping("/marvel")
+    @ApiOperation(value = "Consulta quadrinhos da Marvel")
     public ComicDataWrapper catalogoComic() {
         ComicDataWrapper catalogo = comicClient.catalogo();
         return catalogo;
     }
 
     @GetMapping("/marvel/{comicId}")
+    @ApiOperation(value = "Busca um quadrinho da Marvel")
     public ComicDataWrapper buscarComic(@PathVariable Long comicId) {
         ComicDataWrapper comic = comicClient.getComic(comicId);
         return comic;
     }
 
     @GetMapping("/usuario/{usuarioId}")
+    @ApiOperation(value = "Consulta quadrinhos do usuário")
     public ResponseEntity<?> findQuadrinhosUsuario(@PathVariable Long usuarioId) {
 
         try {
