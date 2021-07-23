@@ -75,7 +75,7 @@ public class QuadrinhoService {
                     quadrinho.setIsbn(quadrinhoRequest.getIsbn());
                 }
 
-                if (!comic.getIsbn().equals("") && !quadrinhoRequest.getIsbn().equals("") ) {
+                if (!quadrinho.getIsbn().equals("")) {
                     quadrinho.setDiaDesconto(this.getDiaDesconto(quadrinho.getIsbn()));
                 }
 
