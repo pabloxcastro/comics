@@ -34,6 +34,11 @@ public class Usuario {
         this.dataNascimento = dataNascimento;
     }
 
+    public Usuario(String nome, LocalDate dataNascimento) {
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+    }
+
     public Long getId() {
         return id;
     }
