@@ -28,10 +28,29 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
-
     @ExceptionHandler(EntidadeJaExisteException.class)
     public ResponseEntity<Object> handleEntidadeJaExisteException(
             EntidadeJaExisteException e) {
+
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", e.getMessage());
+
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(EntidadeEmUsoException.class)
+    public ResponseEntity<Object> handleEntidadeEmUsoException(
+            EntidadeEmUsoException e) {
+
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", e.getMessage());
+
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<Object> handleEntidadeNaoEncontradaException(
+            EntidadeNaoEncontradaException e) {
 
         Map<String, String> errors = new HashMap<>();
         errors.put("error", e.getMessage());

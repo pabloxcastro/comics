@@ -4,7 +4,6 @@ import com.p4bloh.comics.domain.dto.UsuarioPutRequest;
 import com.p4bloh.comics.domain.dto.UsuarioPutResponse;
 import com.p4bloh.comics.domain.dto.UsuarioRequest;
 import com.p4bloh.comics.domain.dto.UsuarioResponse;
-import com.p4bloh.comics.domain.exception.EntidadeEmUsoException;
 import com.p4bloh.comics.domain.exception.EntidadeNaoEncontradaException;
 import com.p4bloh.comics.domain.model.Usuario;
 import com.p4bloh.comics.domain.repository.UsuarioRepository;
@@ -12,7 +11,6 @@ import com.p4bloh.comics.domain.service.UsuarioService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,19 +77,9 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Remover usuário")
     public ResponseEntity<?> excluir(@PathVariable Long id){
-        try {
-            usuarioService.excluir(id);
-            return ResponseEntity.ok().build();
-
-        } catch (EntidadeNaoEncontradaException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+        usuarioService.excluir(id);
+        return ResponseEntity.ok().build();
     }
-
 
 }
