@@ -1,6 +1,7 @@
 package com.p4bloh.comics.domain.service;
 
 import com.p4bloh.comics.domain.model.Quadrinho;
+import com.p4bloh.comics.domain.model.QuadrinhoAutor;
 import com.p4bloh.comics.domain.model.QuadrinhoPreco;
 import com.p4bloh.comics.domain.repository.QuadrinhoPrecoRepository;
 import com.p4bloh.comics.marvel.model.ComicPrice;
@@ -30,5 +31,14 @@ public class QuadrinhoPrecoService {
             quadrinhoPrecos.add(quadrinhoPrecoRepository.save(quadrinhoPreco));
         }
         return quadrinhoPrecos;
+    }
+
+    public void excluir(Quadrinho quadrinho){
+
+        ArrayList<QuadrinhoPreco> quadrinhoPrecos = quadrinhoPrecoRepository.findByQuadrinhoEquals(quadrinho);
+
+        if (quadrinhoPrecos.size() > 0){
+            quadrinhoPrecoRepository.deleteAll(quadrinhoPrecos);
+        }
     }
 }

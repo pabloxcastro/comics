@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "api/quadrinhos")
@@ -60,7 +61,7 @@ public class QuadrinhoController {
     }
 
     @GetMapping("/marvel")
-    @ApiOperation(value = "Consulta quadrinhos da Marvel")
+    @ApiOperation(value = "Consulta de quadrinhos da Marvel")
     public ComicDataWrapper catalogoComic() {
         ComicDataWrapper catalogo = comicClient.catalogo();
         return catalogo;
@@ -74,7 +75,7 @@ public class QuadrinhoController {
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    @ApiOperation(value = "Consulta quadrinhos do usuário")
+    @ApiOperation(value = "Consulta de quadrinhos do usuário")
     public ResponseEntity<?> findQuadrinhosUsuario(@PathVariable Long usuarioId) {
 
         try {
@@ -105,5 +106,12 @@ public class QuadrinhoController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @DeleteMapping("{quadrinhoId}")
+    @ApiOperation(value = "Exclusão de quadrinhos do usuário")
+    public ResponseEntity<?> excluir(@PathVariable Long quadrinhoId) {
+        quadrinhoService.excluir(quadrinhoId);
+        return ResponseEntity.ok().build();
     }
 }
