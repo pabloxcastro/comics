@@ -54,7 +54,7 @@ public class UsuarioController {
     }
     
     @PatchMapping("/{id}")
-    @ApiOperation(value = "Atualização de nome e data de nascimento")
+    @ApiOperation(value = "Alteração de nome e data de nascimento de usuário")
     public ResponseEntity<?> atualizarUsuario(@PathVariable Long id,
                                               @RequestBody UsuarioPutRequest usuarioRequest){
         try {
@@ -77,6 +77,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Exclusão de usuário")
     public ResponseEntity<?> excluir(@PathVariable Long id){
         usuarioService.excluir(id);
         return ResponseEntity.ok().build();
