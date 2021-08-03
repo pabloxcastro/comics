@@ -33,4 +33,13 @@ public class QuadrinhoAutorService {
         return quadrinhoAutores;
 
     }
+
+    public void excluir(Quadrinho quadrinho){
+
+        ArrayList<QuadrinhoAutor> quadrinhoAutores = quadrinhoAutorRepository.findByQuadrinhoEquals(quadrinho);
+
+        if (quadrinhoAutores.size() > 0){
+            quadrinhoAutorRepository.deleteAll(quadrinhoAutores);
+        }
+    }
 }

@@ -7,12 +7,16 @@ import com.p4bloh.comics.domain.model.Quadrinho;
 import com.p4bloh.comics.domain.model.QuadrinhoAutor;
 import com.p4bloh.comics.domain.model.QuadrinhoPreco;
 import com.p4bloh.comics.domain.model.Usuario;
+import com.p4bloh.comics.domain.repository.QuadrinhoAutorRepository;
+import com.p4bloh.comics.domain.repository.QuadrinhoPrecoRepository;
 import com.p4bloh.comics.domain.repository.QuadrinhoRepository;
 import com.p4bloh.comics.domain.repository.UsuarioRepository;
 import com.p4bloh.comics.marvel.client.ComicClient;
 import com.p4bloh.comics.marvel.model.*;
 import feign.FeignException;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -37,6 +41,12 @@ public class QuadrinhoService {
 
     @Autowired
     private QuadrinhoAutorService quadrinhoAutorService;
+
+    @Autowired
+    private QuadrinhoPrecoRepository quadrinhoPrecoRepository;
+
+    @Autowired
+    private QuadrinhoAutorRepository quadrinhoAutorRepository;
 
     public QuadrinhoResponse salvar(QuadrinhoRequest quadrinhoRequest){
 
@@ -142,4 +152,18 @@ public class QuadrinhoService {
 
         return diaSemana;
     }
+
+    public void excluir(Long quadrinhoId){
+
+        Quadrinho quadrinho = quadrinhoRepository.findById(quadrinhoId)
+                .orElseThrow(()-> new EntidadeNaoEncontradaException("Quadrinho", quadrinhoId));
+
+        quadrinhoAutorService.excluir(quadrinho);
+
+        quadrinhoPrecoService.excluir(quadrinho);
+
+        quadrinhoRepository.deleteById(quadrinhoId);
+    }
+
+
 }
